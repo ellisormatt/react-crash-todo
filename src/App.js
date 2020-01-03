@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 import Todos from './Components/Todos';
+import AddTodo from './Components/AddTodo';
+import Header from './Components/layout/header';
 
 
 class App extends React.Component {
@@ -9,12 +11,12 @@ class App extends React.Component {
       {
         id: 1,
         title: 'Sample task 1',
-        completed: true
+        completed: false
       },
       {
         id: 2,
         title: 'Sample task 2',
-        completed: true
+        completed: false
       },
       {
         id: 3,
@@ -24,10 +26,29 @@ class App extends React.Component {
     ]
   }
   
+  //toggle completed status on item
+  markComplete = (id) => {
+    this.setState({todos: this.state.todos.map(todo => {
+      if(todo.id === id) {
+        todo.completed = !todo.completed
+      }
+      return todo;
+    })});
+  }
+
+  //delete todo
+  delTodo = (id) => {
+    this.setState({todos: [...this.state.todos.filter(todo => todo.id !== id)]});
+  }
+
   render () {
     return (
       <div className="App">
-        <Todos todos={this.state.todos} />
+        <div className="container">
+          <Header />
+          <AddTodo />
+          <Todos todos={this.state.todos} markComplete={this.markComplete} delTodo={this.delTodo}/>
+        </div>
       </div>
     )
   }
